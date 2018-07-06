@@ -68,11 +68,7 @@ public class MainActivity extends AppCompatActivity {
 //                        adapter = new MoviesAdapter(MainActivity.this, response.getMovies() );
 //                        movieRecycler.setLayoutManager(new GridLayoutManager(MainActivity.this,2));
 //                        movieRecycler.setAdapter(adapter);
-
-
                     }
-
-
 
                     @Override
                     public void onError(ANError anError) {
@@ -84,9 +80,6 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-
-
-
     // Method Recycler & Adapter
     public void recyclerVtew(Response response){
 
@@ -95,8 +88,6 @@ public class MainActivity extends AppCompatActivity {
         movieRecycler.setLayoutManager(new GridLayoutManager(MainActivity.this,2));
         movieRecycler.setAdapter(adapter);
     }
-
-
 
 
     @Override
@@ -114,9 +105,11 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.popular:
                 downloadMovies(constant.Api.POPULAR_MOVIES_KEY);// Method download Movies by Library-->Fastnetwark
+                return true;
 
             case R.id.top_rated:
                 downloadMovies(constant.Api.TOP_RATED_MOVIES_KEY);// Method download Movies by Library-->Fastnetwark
+                return true;
 
         }
         return super.onOptionsItemSelected(item);

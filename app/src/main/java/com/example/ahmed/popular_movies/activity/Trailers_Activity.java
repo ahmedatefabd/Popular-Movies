@@ -53,7 +53,7 @@ public class Trailers_Activity extends AppCompatActivity {
 
         AndroidNetworking.get(constant.Api.BASE_URL + constant.Api.MOVIE_GET_VIDEO_LINK)
                 .addQueryParameter( constant.Api.TOKEN_NAME , constant.Api.TOKEN_VALUE )
-                .addPathParameter( constant.Api.KEY_ID_GET_VIDEO , id )
+                .addPathParameter( constant.Api.KEY_ID_GET_VIDEO , id ) // id every movie
                 .build()
                 .getAsObject(ResponseTrailes.class, new ParsedRequestListener<ResponseTrailes>() {
 
