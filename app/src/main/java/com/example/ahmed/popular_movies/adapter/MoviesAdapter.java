@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import com.example.ahmed.popular_movies.R;
 import com.example.ahmed.popular_movies.activity.Details_Activity;
 import com.example.ahmed.popular_movies.model.Movie;
+import com.example.ahmed.popular_movies.model.Trailer;
 import com.example.ahmed.popular_movies.util.constant;
 import com.squareup.picasso.Picasso;
 
@@ -25,6 +26,8 @@ import butterknife.ButterKnife;
  */
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHolder> {
+
+    private List<Trailer> trailerList ;
 
     private Context m_context;
     private List<Movie> movieList;
@@ -47,7 +50,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHold
     public void onBindViewHolder(MoviesHolder holder, int position) {
 
         final Movie movie = movieList.get(position);
-
+//        final Trailer trailer = trailerList.get(position);
 
 
         Picasso.with(m_context)
