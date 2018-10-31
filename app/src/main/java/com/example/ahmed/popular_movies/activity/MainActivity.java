@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     @BindView(R.id.movie_recycler)
-    RecyclerView movieRecycler;
+    RecyclerView movieRecycler; //
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
 
