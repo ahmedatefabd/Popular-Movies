@@ -18,6 +18,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.example.ahmed.popular_movies.R;
 import com.example.ahmed.popular_movies.adapter.MoviesAdapter;
 import com.example.ahmed.popular_movies.model.Movie;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.List;
 
@@ -28,89 +29,67 @@ public class MainActivity extends AppCompatActivity {
 
 
     @BindView(R.id.movie_recycler)
-    RecyclerView movieRecycler; //
-    @BindView(R.id.progress_bar)
-    ProgressBar progressBar;
+    RecyclerView movieRecycler;
 
-    private MoviesAdapter adapter ;// referance --> class_Adapter
+    private ShimmerFrameLayout mShimmerViewContainer;
+    private MoviesAdapter adapter ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         ButterKnife.bind(MainActivity.this);
-
-        downloadMovies(constant.Api.POPULAR_MOVIES_KEY);// Method download Movies by Library-->Fastnetwark
+        mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
+        downloadMovies(constant.Api.POPULAR_MOVIES_KEY);
     }
-
-
-
-    // Method download Movies by Library-->Fastnetwark
     private void downloadMovies(String typeMovie) {
-        progressBar.setVisibility(View.VISIBLE);
-
-
-        AndroidNetworking.get(constant.Api.BASE_URL + typeMovie ) // BASE_URL-->link-->class->constant->package->util
-                .addQueryParameter(constant.Api.TOKEN_NAME , constant.Api.TOKEN_VALUE) // token_URL-->key & value-->class->constant->package->util
+        AndroidNetworking.get(constant.Api.BASE_URL + typeMovie )
+                .addQueryParameter(constant.Api.TOKEN_NAME , constant.Api.TOKEN_VALUE)
                 .build()
-                .getAsObject(Response.class, new ParsedRequestListener<Response>() { // return-->JsonObject--> convert to Object_java in class-->Response contain JsonArray convert to List<Movie> in class Movie
-
+                .getAsObject(Response.class, new ParsedRequestListener<Response>() {
                     @Override
                     public void onResponse(Response response) {
-                        progressBar.setVisibility(View.INVISIBLE);
-
-
-                        recyclerVtew(response);// Method Recycler & Adapter
-
-
-                        // mmkn a3rf el recycler hnaaa w mmkn a3malo fe method lwa7do braaa
-
-//                        adapter = new MoviesAdapter(MainActivity.this, response.getMovies() );
-//                        movieRecycler.setLayoutManager(new GridLayoutManager(MainActivity.this,2));
-//                        movieRecycler.setAdapter(adapter);
+                        recyclerVtew(response);
+                        mShimmerViewContainer.stopShimmerAnimation();
+                        mShimmerViewContainer.setVisibility(View.GONE);
                     }
-
                     @Override
                     public void onError(ANError anError) {
-                        progressBar.setVisibility(View.INVISIBLE);
-
                         Toast.makeText(MainActivity.this, anError.getErrorDetail(), Toast.LENGTH_SHORT).show();
-
                     }
                 });
     }
-
-    // Method Recycler & Adapter
     public void recyclerVtew(Response response){
-
         adapter = new MoviesAdapter(MainActivity.this, response.getMovies() );
-
         movieRecycler.setLayoutManager(new GridLayoutManager(MainActivity.this,2));
         movieRecycler.setAdapter(adapter);
     }
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        mShimmerViewContainer.startShimmerAnimation();
+    }
+    @Override
+    public void onPause() {
+        mShimmerViewContainer.stopShimmerAnimation();
+        super.onPause();
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.menu_main_activity, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         switch (id){
-
             case R.id.popular:
                 downloadMovies(constant.Api.POPULAR_MOVIES_KEY);// Method download Movies by Library-->Fastnetwark
                 return true;
-
             case R.id.top_rated:
                 downloadMovies(constant.Api.TOP_RATED_MOVIES_KEY);// Method download Movies by Library-->Fastnetwark
                 return true;
-
         }
         return super.onOptionsItemSelected(item);
     }
